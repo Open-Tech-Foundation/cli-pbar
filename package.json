@@ -5,7 +5,7 @@
   "main": "@open-tech-world/cli-progress-bar.cjs.js",
   "module": "@open-tech-world/cli-progress-bar.esm.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "build": "rollup -c",
     "start": "rollup -c -w"
   },
@@ -38,6 +38,7 @@
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jest": "^22.6.4",
     "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.8.0",
     "prettier": "^1.18.2",
     "rollup": "^1.15.5",
     "rollup-plugin-filesize": "^6.1.0"
