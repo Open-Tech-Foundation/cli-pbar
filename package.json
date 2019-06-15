@@ -1,0 +1,40 @@
+{
+  "name": "@open-tech-world/cli-progress-bar",
+  "version": "0.0.0",
+  "description": "Node.js CLI progress bar.",
+  "main": "@open-tech-world/cli-progress-bar.cjs.js",
+  "module": "@open-tech-world/cli-progress-bar.esm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "start": "rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-tech-world/cli-progress-bar.git"
+  },
+  "keywords": [
+    "node",
+    "node.js",
+    "cli",
+    "progress",
+    "bar"
+  ],
+  "author": {
+    "name": "Thanga Ganapathy",
+    "email": "ganapathy888@gmail.com",
+    "url": "https://ganapathy888.github.io"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/open-tech-world/cli-progress-bar/issues"
+  },
+  "homepage": "https://github.com/open-tech-world/cli-progress-bar#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "prettier": "^1.18.2",
+    "rollup": "^1.15.5",
+    "rollup-plugin-filesize": "^6.1.0"
+  }
+}
