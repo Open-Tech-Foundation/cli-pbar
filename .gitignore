@@ -1,4 +1,3 @@
-
 # Logs
 logs
 *.log
@@ -24,3 +23,5 @@ typings/
 
 # Optional eslint cache
 .eslintcache
+
+build
