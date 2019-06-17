@@ -1,6 +1,6 @@
 {
   "name": "@open-tech-world/cli-progress-bar",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Node.js CLI progress bar.",
   "main": "dist/cli-progress-bar.cjs.js",
   "module": "dist/cli-progress-bar.esm.js",
@@ -45,5 +45,7 @@
     "rollup": "^1.15.5",
     "rollup-plugin-filesize": "^6.1.0"
   },
-  "files": ["dist"]
+  "files": [
+    "dist"
+  ]
 }
