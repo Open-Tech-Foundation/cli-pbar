@@ -27,7 +27,9 @@ class ProgressBar {
   }
 
   run(action = '', curVal = 0, totalVal = 0, statusText = '') {
-    const percent = percentage(curVal, totalVal);
+    const tVal = Math.max(totalVal, 0);
+    const currentVal = Math.min(Math.max(curVal, 0), tVal);
+    const percent = percentage(currentVal, tVal);
     const barString = this.bar(percent);
     this.render(
       `${action} ${barString}${colors.reset} ${percent}% ${statusText}`
