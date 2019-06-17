@@ -30,7 +30,7 @@ class ProgressBar {
     const percent = percentage(curVal, totalVal);
     const barString = this.bar(percent);
     this.render(
-      `${action} ${barString} ${colors.reset} ${percent}% ${statusText}`
+      `${action} ${barString}${colors.reset} ${percent}% ${statusText}`
     );
   }
 
