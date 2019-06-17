@@ -3,7 +3,7 @@ const { percentage, percentageVal } = require('./math');
 
 class ProgressBar {
   constructor(options = {}) {
-    this.width = 30;
+    this.width = options.width || 30;
     this.stream = options.stream || process.stderr;
     this.barChar = options.barChar || '\u2588';
   }
