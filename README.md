@@ -2,7 +2,10 @@
 
 > Node.js CLI progress bar.
 
+Simple demo of `dark` theme terminal
 ![Simple demo dark](/media/simple_demo_dark.gif)
+
+Simple demo of `light` theme terminal
 ![Simple demo light](/media/simple_demo_light.gif)
 
 ## Install
@@ -53,11 +56,11 @@ new ProgressBar({});
 new ProgressBar({ width: 40 });
 ```
 
-options: object, default `{}`
+options: `object`, default `{}`
 
-- width: number, default `30`
-- stream: stream, default `process.stderr`
-- barChar: string, default `'\u2588'`
+- width: `number`, default `30`
+- stream: `stream`, default `process.stderr`
+- barChar: `string`, default `'\u2588'`
 
 ### run(action = '', curVal = 0, totalVal = 0, statusText = '')
 Starts or updates the current progress bar instance.
@@ -70,10 +73,10 @@ progressBar.run('Downloaded', 72, 72)
 progressBar.run('Downloading', 3, 10, `ETA: ${speed}`)
 ```
 
-- action: string, default `''` - used to display progress bar actions on the left side of progress bar
-- curVal: number, default `0` - current value of a progress bar
-- totalVal: number, default `0` - total value of a progress bar
-- statusText: string, default `''` - used to show some additional info on the right side of a progress bar
+- action: `string`, default `''` - used to display progress bar actions on the left side of progress bar
+- curVal: `number`, default `0` - current value of a progress bar
+- totalVal: `number`, default `0` - total value of a progress bar
+- statusText: `string`, default `''` - used to show some additional info on the right side of a progress bar
 
 ### stop(clear = false)
 Stops the current progress bar instance with the current state and optionally clears the line.
@@ -84,7 +87,7 @@ progressBar.stop()
 progressBar.stop(true)
 ```
 
-- clear: boolean, default `false` - used to clear or remove the progress bar after stops
+- clear: `boolean`, default `false` - used to clear or remove the progress bar after stops
 
 ## License
 
