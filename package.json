@@ -1,6 +1,6 @@
 {
   "name": "@open-tech-world/cli-progress-bar",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Node.js CLI progress bar.",
   "main": "dist/cli-progress-bar.cjs.js",
   "module": "dist/cli-progress-bar.esm.js",
