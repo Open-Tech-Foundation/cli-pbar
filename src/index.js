@@ -1,5 +1,5 @@
-import colors from './colors';
-import { percentage, percentageVal } from './math';
+const colors = require('./colors');
+const { percentage, percentageVal } = require('./math');
 
 class ProgressBar {
   constructor(options = {}) {
@@ -46,4 +46,4 @@ class ProgressBar {
   }
 }
 
-export default ProgressBar;
+module.exports = ProgressBar;

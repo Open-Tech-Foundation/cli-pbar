@@ -1,3 +1,5 @@
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 import filesize from 'rollup-plugin-filesize';
 import { eslint } from 'rollup-plugin-eslint';
 
@@ -11,6 +13,11 @@ export default [
       { file: pkg.main, format: 'cjs' },
       { file: pkg.module, format: 'es' },
     ],
-    plugins: [filesize(), eslint({ throwOnError: true })],
+    plugins: [
+      eslint({ throwOnError: true }),
+      resolve(),
+      commonjs(),
+      filesize(),
+    ],
   },
 ];
