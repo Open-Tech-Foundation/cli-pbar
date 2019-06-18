@@ -2,6 +2,9 @@
 
 > Node.js CLI progress bar.
 
+![Simple demo dark](/media/simple_demo_dark.gif)
+![Simple demo light](/media/simple_demo_light.gif)
+
 ## Install
 
 ```bash
