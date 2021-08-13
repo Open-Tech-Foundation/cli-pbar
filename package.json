@@ -31,7 +31,6 @@
     "url": "https://github.com/open-tech-world/cli-progress-bar/issues"
   },
   "homepage": "https://github.com/open-tech-world/cli-progress-bar#readme",
-  "dependencies": {},
   "devDependencies": {
     "ansi-regex": "^4.1.0",
     "eslint": "^5.16.0",
@@ -50,5 +49,6 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "packageManager": "yarn@3.0.1"
 }
