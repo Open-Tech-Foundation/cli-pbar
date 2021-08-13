@@ -2,18 +2,6 @@
   "name": "@open-tech-world/cli-progress-bar",
   "version": "1.0.6",
   "description": "Node.js CLI progress bar.",
-  "main": "dist/cli-progress-bar.cjs.js",
-  "module": "dist/cli-progress-bar.esm.js",
-  "scripts": {
-    "test": "jest --watch",
-    "prebuild": "rm -rf dist/*",
-    "build": "rollup -c",
-    "prepublishOnly": "npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/open-tech-world/cli-progress-bar.git"
-  },
   "keywords": [
     "node",
     "node.js",
@@ -21,10 +9,26 @@
     "progress",
     "bar"
   ],
+  "main": "./dist/index.cjs",
+  "module": "dist/index.esm.js",
+  "exports": {
+    "import": "./lib/index.esm.js",
+    "require": "./lib/index.cjs"
+  },
+  "typings": "./lib/index.d.ts",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development rollup -c -w",
+    "build": "rollup -c",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-tech-world/cli-progress-bar.git"
+  },
   "author": {
     "name": "Thanga Ganapathy",
     "email": "ganapathy888@gmail.com",
-    "url": "https://ganapathy888.github.io"
+    "url": "https://thanga-ganapathy.github.io"
   },
   "license": "MIT",
   "bugs": {
@@ -32,23 +36,23 @@
   },
   "homepage": "https://github.com/open-tech-world/cli-progress-bar#readme",
   "devDependencies": {
-    "ansi-regex": "^4.1.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^5.0.0",
-    "eslint-plugin-import": "^2.17.3",
-    "eslint-plugin-jest": "^22.6.4",
-    "eslint-plugin-prettier": "^3.1.0",
+    "@open-tech-world/rollup-plugin-clean": "^0.13.0",
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@types/jest": "^27.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^24.4.0",
+    "eslint-plugin-prettier": "^3.4.0",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
     "rollup": "^1.15.5",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-eslint": "^6.0.0",
-    "rollup-plugin-filesize": "^6.1.0",
-    "rollup-plugin-node-resolve": "^5.0.3"
+    "typescript": "^4.3.5"
   },
   "files": [
-    "dist"
+    "lib"
   ],
   "packageManager": "yarn@3.0.1"
 }

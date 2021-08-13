@@ -1,23 +1,18 @@
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import filesize from 'rollup-plugin-filesize';
-import { eslint } from 'rollup-plugin-eslint';
+import typescript from '@rollup/plugin-typescript';
+import { clean } from '@open-tech-world/rollup-plugin-clean';
 
-import pkg from './package.json';
-
-export default [
-  // CommonJS (for Node) and ES module (for bundlers) build.
-  {
-    input: 'src/index.js',
-    output: [
-      { file: pkg.main, format: 'cjs' },
-      { file: pkg.module, format: 'es' },
-    ],
-    plugins: [
-      eslint({ throwOnError: true }),
-      resolve(),
-      commonjs(),
-      filesize(),
-    ],
-  },
-];
+export default {
+  input: 'src/index.ts',
+  output: [
+    {
+      file: './lib/index.esm.js',
+      format: 'esm',
+    },
+    {
+      file: './lib/index.cjs',
+      format: 'cjs',
+    },
+  ],
+  plugins: [clean('lib/*'), typescript({ tsconfig: './tsconfig.json' })],
+  external: [],
+};
