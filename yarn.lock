@@ -550,6 +550,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@open-tech-world/cli-progress-bar@workspace:."
   dependencies:
+    "@open-tech-world/es-cli-styles": ^0.3.0
     "@open-tech-world/rollup-plugin-clean": ^0.13.0
     "@rollup/plugin-typescript": ^8.2.5
     "@types/jest": ^27.0.1

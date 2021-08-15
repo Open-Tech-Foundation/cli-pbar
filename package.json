@@ -9,8 +9,8 @@
     "progress",
     "bar"
   ],
+  "type": "module",
   "main": "./dist/index.cjs",
-  "module": "dist/index.esm.js",
   "exports": {
     "import": "./lib/index.esm.js",
     "require": "./lib/index.cjs"
@@ -54,5 +54,8 @@
   "files": [
     "lib"
   ],
-  "packageManager": "yarn@3.0.1"
+  "packageManager": "yarn@3.0.1",
+  "dependencies": {
+    "@open-tech-world/es-cli-styles": "^0.3.0"
+  }
 }
