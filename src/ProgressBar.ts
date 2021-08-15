@@ -11,6 +11,7 @@ class ProgressBar {
   private suffix: string;
   private color: string;
   private isStopped: boolean;
+  autoClear: boolean;
 
   constructor(options?: Partial<IOptions>) {
     this.stream = options?.stream || process.stderr;
@@ -19,6 +20,7 @@ class ProgressBar {
     this.suffix = options?.suffix || '';
     this.color = options?.color || 'green';
     this.isStopped = false;
+    this.autoClear = options?.autoClear || false;
   }
 
   private render(str: string): void {
@@ -35,7 +37,7 @@ class ProgressBar {
   }
 
   stop(clear = false): void {
-    if (clear) {
+    if (clear || this.autoClear) {
       this.stream.cursorTo(0);
       this.stream.clearLine(1);
     } else {

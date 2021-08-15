@@ -1,6 +1,16 @@
+import { sleep } from '@open-tech-world/es-utils';
+
 import { ProgressBar } from './lib/index.esm.js';
 
-function runProgress(total, prefix, suffix, color, completedPrefix, width) {
+function runProgress(
+  total,
+  prefix,
+  suffix,
+  color,
+  finalPrefix,
+  finalSuffix,
+  width
+) {
   return new Promise(resolve => {
     let complete = 0;
     let currentSuffix = Array.isArray(suffix) ? suffix.shift() : suffix;
@@ -15,7 +25,12 @@ function runProgress(total, prefix, suffix, color, completedPrefix, width) {
     const intervalID = setInterval(() => {
       complete += 5;
       if (complete === total) {
-        progressBar.run({ value: complete, total, prefix: completedPrefix });
+        progressBar.run({
+          value: complete,
+          total,
+          prefix: finalPrefix,
+          suffix: finalSuffix,
+        });
         clearInterval(intervalID);
         console.log();
         resolve();
@@ -51,16 +66,24 @@ function runProgress(total, prefix, suffix, color, completedPrefix, width) {
   await runProgress(
     100,
     'Installing',
-    [
-      'Google Chrome',
-      'Firefox',
-      'Microsoft Edge',
-      'Developer Tools',
-      'Installation Done!',
-    ],
+    ['Google Chrome', 'Firefox', 'Microsoft Edge', 'Developer Tools'],
     undefined,
-    ''
+    '',
+    'Installation Done!',
+    20
   );
-  await runProgress(50, 'Change bar color', '', 'blue');
+  await runProgress(50, 'Custom bar color', '', 'blue');
   await runProgress(90, 'Multiple colors', '', ['red', 'yellow', 'green']);
+
+  const p1 = new ProgressBar({
+    autoClear: true,
+    prefix: 'This will be auto cleared',
+  });
+  p1.run({ value: 0, total: 50 });
+  await sleep(500);
+  p1.run({ value: 25, total: 50 });
+  await sleep(500);
+  p1.run({ value: 45, total: 50 });
+  await sleep(500);
+  p1.run({ value: 50, total: 50 });
 })();

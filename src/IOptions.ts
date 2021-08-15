@@ -4,4 +4,5 @@ export default interface IOptions {
   prefix?: string;
   suffix?: string;
   color?: string;
+  autoClear?: boolean;
 }
