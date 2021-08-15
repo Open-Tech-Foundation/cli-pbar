@@ -11,10 +11,12 @@ class ProgressBar {
   private suffix: string;
   private color: string;
   private isStopped: boolean;
-  autoClear: boolean;
+  private autoClear: boolean;
+  private tty: boolean;
 
   constructor(options?: Partial<IOptions>) {
     this.stream = options?.stream || process.stderr;
+    this.tty = this.stream.isTTY;
     this.width = options?.width || 30;
     this.prefix = options?.prefix || '';
     this.suffix = options?.suffix || '';
@@ -29,7 +31,7 @@ class ProgressBar {
     }
   }
 
-  private getBar(percent: number): string {
+  private getBars(percent: number): string {
     const percentVal = percentageOf(percent, this.width);
     const doneBars = style(`~${this.color}.bold{\u{2588}}`).repeat(percentVal);
     const bgBars = style('~gray.dim{\u{2588}}').repeat(this.width - percentVal);
@@ -37,14 +39,18 @@ class ProgressBar {
   }
 
   stop(clear = false): void {
+    this.isStopped = true;
+
+    if (!this.tty) {
+      return;
+    }
+
     if (clear || this.autoClear) {
       this.stream.cursorTo(0);
       this.stream.clearLine(1);
     } else {
       this.stream.write('\n');
     }
-
-    this.isStopped = true;
   }
 
   run(options: IRunOptions): void {
@@ -62,14 +68,18 @@ class ProgressBar {
       this.suffix = options.suffix;
     }
 
-    if (options.color) {
-      this.color = options.color;
-    }
+    if (this.tty) {
+      if (options.color) {
+        this.color = options.color;
+      }
 
-    const bar = this.getBar(percent);
-    this.render(
-      this.prefix + ' ' + bar + ' ' + percent + '% ' + this.suffix + ' '
-    );
+      const bar = this.getBars(percent);
+      this.render(
+        this.prefix + ' ' + bar + ' ' + percent + '% ' + this.suffix + ' '
+      );
+    } else {
+      this.stream.write(this.prefix + ' ' + percent + '%' + this.suffix + '\n');
+    }
 
     if (percent === 100) {
       this.stop();

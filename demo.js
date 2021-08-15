@@ -11,7 +11,7 @@ function runProgress(
   finalSuffix,
   width
 ) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     let complete = 0;
     let currentSuffix = Array.isArray(suffix) ? suffix.shift() : suffix;
     let currentColor = Array.isArray(color) ? color.shift() : color;
