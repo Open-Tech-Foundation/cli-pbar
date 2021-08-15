@@ -29,8 +29,8 @@ class ProgressBar {
 
   private getBar(percent: number): string {
     const percentVal = percentageOf(percent, this.width);
-    const doneBars = style(`~${this.color}{\u{2588}}`).repeat(percentVal);
-    const bgBars = style('~white{\u{2588}}').repeat(this.width - percentVal);
+    const doneBars = style(`~${this.color}.bold{\u{2588}}`).repeat(percentVal);
+    const bgBars = style('~gray.dim{\u{2588}}').repeat(this.width - percentVal);
     return doneBars + bgBars;
   }
 
@@ -51,10 +51,23 @@ class ProgressBar {
     }
 
     const percent = percentage(options.value, options.total);
-    const prefix = options.prefix ? options.prefix : this.prefix;
-    const suffix = options.suffix ? options.suffix : this.suffix;
+
+    if (options.prefix !== undefined) {
+      this.prefix = options.prefix;
+    }
+
+    if (options.suffix !== undefined) {
+      this.suffix = options.suffix;
+    }
+
+    if (options.color) {
+      this.color = options.color;
+    }
+
     const bar = this.getBar(percent);
-    this.render(prefix + ' ' + bar + ' ' + percent + '% ' + suffix);
+    this.render(
+      this.prefix + ' ' + bar + ' ' + percent + '% ' + this.suffix + ' '
+    );
 
     if (percent === 100) {
       this.stop();
