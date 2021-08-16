@@ -14,5 +14,5 @@ export default {
     },
   ],
   plugins: [clean('lib/*'), typescript({ tsconfig: './tsconfig.json' })],
-  external: ['@open-tech-world/es-cli-styles'],
+  external: ['@open-tech-world/es-cli-styles', '@open-tech-world/es-utils'],
 };

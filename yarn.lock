@@ -846,7 +846,7 @@ __metadata:
   resolution: "@open-tech-world/cli-progress-bar@workspace:."
   dependencies:
     "@open-tech-world/es-cli-styles": ^0.3.0
-    "@open-tech-world/es-utils": ^0.9.2
+    "@open-tech-world/es-utils": ^0.10.0
     "@open-tech-world/rollup-plugin-clean": ^0.13.0
     "@rollup/plugin-typescript": ^8.2.5
     "@types/jest": ^27.0.1
@@ -878,17 +878,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@open-tech-world/es-utils@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "@open-tech-world/es-utils@npm:0.10.0"
+  checksum: 0f501b0808249684c33d95e81cbb88f37d6ee21610586b50d0fbdead719b05c217b6912f75a7e3979c0a7dfc41f47c20607850a4e5856f92606b5d8f61549d2f
+  languageName: node
+  linkType: hard
+
 "@open-tech-world/es-utils@npm:^0.8.0":
   version: 0.8.0
   resolution: "@open-tech-world/es-utils@npm:0.8.0"
   checksum: 3954f9653ff1777ae8e5170be6512113c957f988fb41182164f1ed59097cdc3f919fa4546eb2fa8d0ce89e27baa0abd8d0301190b27c99f9f70fa1a5db862e34
-  languageName: node
-  linkType: hard
-
-"@open-tech-world/es-utils@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@open-tech-world/es-utils@npm:0.9.2"
-  checksum: f0ba69c49a34ab6d2844af9fe8a8b242339d2f02ea91c919db1fb735e039bf548789065e24404a938ab59fccd9555071dbc0332117e533164df8f2f82f95707d
   languageName: node
   linkType: hard
 

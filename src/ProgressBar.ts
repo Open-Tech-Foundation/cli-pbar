@@ -2,7 +2,7 @@ import { style } from '@open-tech-world/es-cli-styles';
 
 import IOptions from './IOptions';
 import IRunOptions from './IRunOptions';
-import { percentage, percentageOf } from './math';
+import { percentage, percentageOf } from '@open-tech-world/es-utils';
 
 class ProgressBar {
   private stream: NodeJS.WriteStream;
@@ -32,7 +32,7 @@ class ProgressBar {
   }
 
   private getBars(percent: number): string {
-    const percentVal = percentageOf(percent, this.width);
+    const percentVal = percentageOf(percent, this.width, true);
     const doneBars = style(`~${this.color}.bold{\u{2588}}`).repeat(percentVal);
     const bgBars = style('~gray.dim{\u{2588}}').repeat(this.width - percentVal);
     return doneBars + bgBars;
@@ -58,7 +58,7 @@ class ProgressBar {
       return;
     }
 
-    const percent = percentage(options.value, options.total);
+    const percent = percentage(options.value, options.total, true);
 
     if (options.prefix !== undefined) {
       this.prefix = options.prefix;
