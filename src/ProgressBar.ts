@@ -78,7 +78,9 @@ class ProgressBar {
         this.prefix + ' ' + bar + ' ' + percent + '% ' + this.suffix + ' '
       );
     } else {
-      this.stream.write(this.prefix + ' ' + percent + '%' + this.suffix + '\n');
+      this.stream.write(
+        this.prefix + ' ' + percent + '% ' + this.suffix + '\n'
+      );
     }
 
     if (percent === 100) {
