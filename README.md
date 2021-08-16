@@ -1,94 +1,82 @@
+<div align="center">
+
 # @open-tech-world/cli-progress-bar
+
+![](demo.gif)
+
+</div>
 
 > Node.js CLI progress bar.
 
-Simple demo of `dark` theme terminal
-![Simple demo dark](/media/simple_demo_dark.gif)
+## Installation
 
-Simple demo of `light` theme terminal
-![Simple demo light](/media/simple_demo_light.gif)
-
-## Install
+Using npm
 
 ```bash
-# With npm
 $ npm install @open-tech-world/cli-progress-bar
+```
 
-# With yarn
+Using Yarn
+
+```bash
 $ yarn add @open-tech-world/cli-progress-bar
 ```
 
 ## Usage
 
-```js
-const ProgressBar = require('@open-tech-world/cli-progress-bar');
+```ts
+import { ProgressBar } from '@open-tech-world/cli-progress-bar';
 
-// or
-
-import ProgressBar from '@open-tech-world/cli-progress-bar';
-
-const progressBar = new ProgressBar();
-progressBar.run('Downloading', 0, 100);
-progressBar.run('Download completed', 100, 100);
-progressBar.stop();
-```
-
-## Examples
-
-See more [examples here](/examples)
-
-Clone the repo and run it
-
-```bash
-$ node examples/simple.js
+const pBar = new ProgressBar();
+pBar.run({value: 0, total: 100, prefix: 'Downloading'});
+pBar.run({value: 50, total: 100, prefix: 'Downloading'});
+pBar.run({value: 100, total: 100, prefix: 'Download Completed!'});
 ```
 
 ## API
 
-### constructor(options = {})
-The initializing method of a `ProgressBar` class.
+**new ProgressBar(Partial\<IOptions\>)**
 
-```js
-new ProgressBar();
+It creates a new instance of the `ProgressBar`.
 
-new ProgressBar({});
+options:
 
-new ProgressBar({ width: 40 });
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| stream | NodeJS.WriteStream | process.stderr | The stream to use.
+| width | number | 30 | The size of the progress bar.
+| prefix | string | '' | The string to be prefixed progress bar.
+| suffix | string | '' | The string to be suffixed progress bar.
+| color | string | 'green' | The color to render the progress bar. See the [supported color names here](https://github.com/open-tech-world/es-cli-styles#style-names).
+| autoClear | boolean | false | If true, then it auto clears the progress bar when it reaches `100%`.
+
+#### Instance methods:
+
+**run(options): void**
+
+Runs the current progress bar instance with the given values & options.
+
+options:
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| value | number | NaN | The current value of the progress bar.
+| total | number | NaN | The total value for the progress bar.
+| prefix | string | '' | The string to be prefixed progress bar.
+| suffix | string | '' | The string to be suffixed progress bar.
+| color | string | 'green' | The color to render the progress bar. See the [supported color names here](https://github.com/open-tech-world/es-cli-styles#style-names).
+
+**stop(clear = false): void**
+
+Stops the current progress bar instance with the current state and optionally clears the progress bar.
+
+```ts
+pBar.stop(); // It just stops the progress bar.
+
+pBar.stop(true); // It stops & removes the progress bar.
 ```
-
-options: `object`, default `{}`
-
-- width: `number`, default `30`
-- stream: `stream`, default `process.stderr`
-- barChar: `string`, default `'\u2588'`
-
-### run(action = '', curVal = 0, totalVal = 0, statusText = '')
-Starts or updates the current progress bar instance.
-
-```js
-progressBar.run('Running tasks', 23, 150)
-
-progressBar.run('Downloaded', 72, 72)
-
-progressBar.run('Downloading', 3, 10, `ETA: ${speed}`)
-```
-
-- action: `string`, default `''` - used to display progress bar actions on the left side of progress bar
-- curVal: `number`, default `0` - current value of a progress bar
-- totalVal: `number`, default `0` - total value of a progress bar
-- statusText: `string`, default `''` - used to show some additional info on the right side of a progress bar
-
-### stop(clear = false)
-Stops the current progress bar instance with the current state and optionally clears the line.
-
-```js
-progressBar.stop()
-
-progressBar.stop(true)
-```
-
-- clear: `boolean`, default `false` - used to clear or remove the progress bar after stops
 
 ## License
 
-MIT © [Thanga Ganapathy](https://github.com/ganapathy888)
+Copyright (c) 2021, [Thanga Ganapathy](https://thanga-ganapathy.github.io) ([MIT License](./LICENSE)).
+
