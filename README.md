@@ -1,8 +1,10 @@
 <div align="center">
 
 # @open-tech-world/cli-progress-bar
+[![Build](https://github.com/open-tech-world/cli-progress-bar/actions/workflows/build.yml/badge.svg)](https://github.com/open-tech-world/cli-progress-bar/actions/workflows/build.yml) [![CodeFactor](https://www.codefactor.io/repository/github/open-tech-world/cli-progress-bar/badge)](https://www.codefactor.io/repository/github/open-tech-world/cli-progress-bar)
+![npm (scoped)](https://img.shields.io/npm/v/@open-tech-world/cli-progress-bar)
 
-![](demo.gif)
+![](demo.gif) 
 
 </div>
 
