@@ -1,91 +1,113 @@
-import { style } from '@open-tech-world/es-cli-styles';
+import { style } from '@opentf/cli-styles';
+import { percentage, percentageOf } from '@opentf/utils';
+import { type Bar, type BarSize, type Options } from './types';
 
-import IOptions from './IOptions';
-import IRunOptions from './IRunOptions';
-import { percentage, percentageOf } from '@open-tech-world/es-utils';
+const DEFAULT_BAR_CHAR = '\u{2588}';
+const SMALL_BAR_CHAR = '\u{2501}';
+const MEDIUM_BAR_CHAR = '\u{2586}';
 
 class ProgressBar {
-  private stream: NodeJS.WriteStream;
-  private width: number;
-  private prefix: string;
-  private suffix: string;
-  private color: string;
-  private isStopped: boolean;
-  private autoClear: boolean;
-  private tty: boolean;
+  private _stream: NodeJS.WriteStream;
+  private _width: number;
+  private _color: string;
+  private _bgColor: string;
+  // private _autoClear: boolean;
+  private _bars: (Bar | string)[];
+  private _size: BarSize;
 
-  constructor(options?: Partial<IOptions>) {
-    this.stream = options?.stream || process.stderr;
-    this.tty = this.stream.isTTY;
-    this.width = options?.width || 30;
-    this.prefix = options?.prefix || '';
-    this.suffix = options?.suffix || '';
-    this.color = options?.color || 'green';
-    this.isStopped = false;
-    this.autoClear = options?.autoClear || false;
+  constructor(options?: Options) {
+    this._stream = options?.stream || process.stderr;
+    this._width = options?.width || 30;
+    this._color = options?.color || 'g';
+    this._bgColor = options?.bgColor || 'gr';
+    // this._autoClear = options?.autoClear || false;
+    this._bars = [];
+    this._size = options?.size || 'DEFAULT';
   }
 
-  private render(str: string): void {
-    if (this.stream.cursorTo(0) && this.stream.clearLine(0)) {
-      this.stream.write(str);
+  private _getBarCharBySize(size: BarSize | undefined) {
+    const s = size || this._size;
+    if (s === 'DEFAULT') {
+      return DEFAULT_BAR_CHAR;
+    } else if (s === 'MEDIUM') {
+      return MEDIUM_BAR_CHAR;
     }
+
+    return SMALL_BAR_CHAR;
   }
 
-  private getBars(percent: number): string {
-    const percentVal = percentageOf(percent, this.width, true);
-    const doneBars = style(`~${this.color}.bold{\u{2588}}`).repeat(percentVal);
-    const bgBars = style('~gray.dim{\u{2588}}').repeat(this.width - percentVal);
+  private _getBars(bar: Bar, percent: number): string {
+    const barChar = this._getBarCharBySize(bar.size);
+    const color = bar.color || this._color;
+    const bgColor = bar.bgColor || this._bgColor;
+    const percentVal = Math.trunc(percentageOf(percent, this._width));
+    const doneBars = style(`$${color}.bol{${barChar}}`).repeat(percentVal);
+    const bgBars = style(`$${bgColor}.dim{${barChar}}`).repeat(
+      this._width - percentVal
+    );
     return doneBars + bgBars;
   }
 
-  stop(clear = false): void {
-    this.isStopped = true;
-
-    if (!this.tty) {
-      return;
-    }
-
-    if (clear || this.autoClear) {
-      this.stream.cursorTo(0);
-      this.stream.clearLine(1);
-    } else {
-      this.stream.write('\n');
+  private _render() {
+    let str = '';
+    this._bars.forEach((b, i) => {
+      if (i > 0) {
+        str += '\n';
+      }
+      if (typeof b === 'string') {
+        str += b;
+      } else {
+        const prefix = b.prefix || '';
+        const suffix = b.suffix || '';
+        const percent = b.total
+          ? Math.trunc(percentage(isNaN(b.value) ? 0 : b.value, b.total))
+          : 0;
+        const bar = this._getBars(b, percent);
+        str += prefix + ' ' + bar + ' ' + percent + '% ' + suffix + ' ';
+      }
+    });
+    if (this._stream.cursorTo(0) && this._stream.clearLine(0)) {
+      this._stream.write(str);
     }
   }
 
-  run(options: IRunOptions): void {
-    if (this.isStopped) {
-      return;
+  start(bar?: Bar) {
+    if (bar) {
+      this._bars.push(bar);
     }
+    this._render();
+  }
 
-    const percent = percentage(options.value, options.total, true);
+  stop() {
+    this._stream.write('\n');
+  }
 
-    if (options.prefix !== undefined) {
-      this.prefix = options.prefix;
-    }
-
-    if (options.suffix !== undefined) {
-      this.suffix = options.suffix;
-    }
-
-    if (this.tty) {
-      if (options.color) {
-        this.color = options.color;
-      }
-
-      const bar = this.getBars(percent);
-      this.render(
-        this.prefix + ' ' + bar + ' ' + percent + '% ' + this.suffix + ' '
-      );
+  update(obj: Partial<Bar>, id?: number) {
+    if (!id) {
+      this._bars[0] = { ...(this._bars[0] as Bar), ...obj } as Bar;
     } else {
-      this.stream.write(
-        this.prefix + ' ' + percent + '% ' + this.suffix + '\n'
+      const index = this._bars.findIndex(
+        (b) => typeof b === 'object' && b.id === id
       );
+      this._bars[index] = { ...(this._bars[index] as Bar), ...obj } as Bar;
+    }
+    this._stream.moveCursor(0, -(this._bars.length - 1));
+    this._render();
+  }
+
+  add(bar: Bar) {
+    if (bar) {
+      const id = this._bars.length + 1;
+      const barInstance = { ...bar, id };
+      this._bars.push(barInstance);
+      return {
+        update: (obj: Partial<Bar>) => {
+          this.update(obj, id);
+        },
+      };
     }
 
-    if (percent === 100) {
-      this.stop();
-    }
+    return null;
   }
 }
 

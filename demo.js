@@ -1,89 +1,89 @@
-import { sleep } from '@open-tech-world/es-utils';
+import { sleep } from '@opentf/utils';
+import { style } from '@opentf/cli-styles';
+import { ProgressBar } from './dist/index.js';
 
-import { ProgressBar } from './lib/index.esm.js';
+function template(title, options = {}) {
+  console.log(style(`$o.bol.und{\n${title}\n}`));
+  return new ProgressBar(options);
+}
 
-function runProgress(
-  total,
-  prefix,
-  suffix,
-  color,
-  finalPrefix,
-  finalSuffix,
-  width
-) {
+function defaultBar() {
   return new Promise((resolve) => {
-    let complete = 0;
-    let currentSuffix = Array.isArray(suffix) ? suffix.shift() : suffix;
-    let currentColor = Array.isArray(color) ? color.shift() : color;
-    const progressBar = new ProgressBar({
-      prefix,
-      suffix: currentSuffix,
-      color: currentColor,
-      width: width,
-    });
-    progressBar.run({ value: complete, total });
+    const pBar = template('Default');
+    pBar.start({ total: 100 });
+    let value = 0;
     const intervalID = setInterval(() => {
-      complete += 5;
-      if (complete === total) {
-        progressBar.run({
-          value: complete,
-          total,
-          prefix: finalPrefix,
-          suffix: finalSuffix,
-        });
+      value += 10;
+      pBar.update({ value });
+      if (value === 100) {
+        pBar.stop();
         clearInterval(intervalID);
-        console.log();
         resolve();
-      } else {
-        currentSuffix =
-          Array.isArray(suffix) && complete % 25 === 0
-            ? suffix.shift()
-            : currentSuffix;
-        currentColor =
-          Array.isArray(color) && complete % 30 === 0
-            ? color.shift()
-            : currentColor;
-        progressBar.run({
-          value: complete,
-          total,
-          suffix: currentSuffix,
-          color: currentColor,
-        });
       }
     }, 100);
   });
 }
 
-(async () => {
-  await runProgress(50);
-  await runProgress(
-    100,
-    'Downloading',
-    undefined,
-    undefined,
-    'Download completed!'
-  );
-  await runProgress(
-    100,
-    'Installing',
-    ['Google Chrome', 'Firefox', 'Microsoft Edge', 'Developer Tools'],
-    undefined,
-    '',
-    'Installation Done!',
-    20
-  );
-  await runProgress(50, 'Custom bar color', '', 'blue');
-  await runProgress(90, 'Multiple colors', '', ['red', 'yellow', 'green']);
-
-  const p1 = new ProgressBar({
-    autoClear: true,
-    prefix: 'This will be auto cleared',
+function mediumBar() {
+  return new Promise((resolve) => {
+    const pBar = template('Medium size + Blue bar', {
+      size: 'MEDIUM',
+      color: 'b',
+    });
+    pBar.start({ total: 100 });
+    let value = 0;
+    const intervalID = setInterval(() => {
+      value += 10;
+      pBar.update({ value });
+      if (value === 100) {
+        pBar.stop();
+        clearInterval(intervalID);
+        resolve();
+      }
+    }, 100);
   });
-  p1.run({ value: 0, total: 50 });
-  await sleep(500);
-  p1.run({ value: 25, total: 50 });
-  await sleep(500);
-  p1.run({ value: 45, total: 50 });
-  await sleep(500);
-  p1.run({ value: 50, total: 50 });
-})();
+}
+
+function smallBar() {
+  return new Promise((resolve) => {
+    const pBar = template('Small size + Red bar', {
+      size: 'SMALL',
+      color: 'r',
+    });
+    pBar.start({ total: 100 });
+    let value = 0;
+    const intervalID = setInterval(() => {
+      value += 10;
+      pBar.update({ value });
+      if (value === 100) {
+        pBar.stop();
+        clearInterval(intervalID);
+        resolve();
+      }
+    }, 100);
+  });
+}
+
+function prefixSuffix() {
+  return new Promise((resolve) => {
+    const pBar = template('Prefix + Bar + Suffix');
+    pBar.start({ total: 100, prefix: 'Installing npm pkgs' });
+    const pkgs = ['babel', 'rollup', 'webpack', 'vite', 'react'];
+    let value = 0;
+    const intervalID = setInterval(() => {
+      value += 20;
+      pBar.update({ value, suffix: pkgs.pop() });
+      if (value === 100) {
+        pBar.update({ prefix: '', suffix: 'Install completed.' });
+        pBar.stop();
+        clearInterval(intervalID);
+        resolve();
+      }
+    }, 500);
+  });
+}
+
+await defaultBar();
+await mediumBar();
+await smallBar();
+await prefixSuffix();
