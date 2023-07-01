@@ -49,10 +49,10 @@ class ProgressBar {
   }
 
   private _render() {
-    let str = '';
     this._bars.forEach((b, i) => {
+      let str = '';
       if (i > 0) {
-        str += '\n';
+        this._stream.write('\n');
       }
       if (typeof b === 'string') {
         str += b;
@@ -65,10 +65,10 @@ class ProgressBar {
         const bar = this._getBars(b, percent);
         str += prefix + ' ' + bar + ' ' + percent + '% ' + suffix + ' ';
       }
+      if (this._stream.cursorTo(0) && this._stream.clearLine(0)) {
+        this._stream.write(str);
+      }
     });
-    if (this._stream.cursorTo(0) && this._stream.clearLine(0)) {
-      this._stream.write(str);
-    }
   }
 
   start(bar?: Bar) {
@@ -100,6 +100,10 @@ class ProgressBar {
       const id = this._bars.length + 1;
       const barInstance = { ...bar, id };
       this._bars.push(barInstance);
+      if (this._bars.length > 2) {
+        this._stream.moveCursor(0, -1);
+      }
+      this._render();
       return {
         update: (obj: Partial<Bar>) => {
           this.update(obj, id);
