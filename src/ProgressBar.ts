@@ -1,18 +1,15 @@
 import { style } from '@opentf/cli-styles';
 import { percentage, percentageOf } from '@opentf/utils';
 import { type Bar, type BarSize, type Options } from './types';
-
-const DEFAULT_BAR_CHAR = '\u{2588}';
-const SMALL_BAR_CHAR = '\u{2501}';
-const MEDIUM_BAR_CHAR = '\u{2586}';
+import { DEFAULT_BAR_CHAR, MEDIUM_BAR_CHAR, SMALL_BAR_CHAR } from './constants';
 
 class ProgressBar {
   private _stream: NodeJS.WriteStream;
   private _width: number;
   private _color: string;
   private _bgColor: string;
-  // private _autoClear: boolean;
-  private _bars: (Bar | string)[];
+  private _autoClear: boolean;
+  private _bars: Bar[];
   private _size: BarSize;
 
   constructor(options?: Options) {
@@ -20,7 +17,7 @@ class ProgressBar {
     this._width = options?.width || 30;
     this._color = options?.color || 'g';
     this._bgColor = options?.bgColor || 'gr';
-    // this._autoClear = options?.autoClear || false;
+    this._autoClear = options?.autoClear || false;
     this._bars = [];
     this._size = options?.size || 'DEFAULT';
   }
@@ -51,20 +48,23 @@ class ProgressBar {
   private _render() {
     this._bars.forEach((b, i) => {
       let str = '';
+
       if (i > 0) {
         this._stream.write('\n');
       }
-      if (typeof b === 'string') {
-        str += b;
-      } else {
-        const prefix = b.prefix || '';
-        const suffix = b.suffix || '';
+
+      const prefix = b.prefix || '';
+      const suffix = b.suffix || '';
+      if (b.progress) {
         const percent = b.total
           ? Math.trunc(percentage(isNaN(b.value) ? 0 : b.value, b.total))
           : 0;
         const bar = this._getBars(b, percent);
-        str += prefix + ' ' + bar + ' ' + percent + '% ' + suffix + ' ';
+        str += prefix + ' ' + bar + ' ' + percent + '% ' + suffix;
+      } else {
+        str += prefix + ' ' + suffix;
       }
+
       if (this._stream.cursorTo(0) && this._stream.clearLine(0)) {
         this._stream.write(str);
       }
@@ -73,12 +73,25 @@ class ProgressBar {
 
   start(bar?: Bar) {
     if (bar) {
-      this._bars.push(bar);
+      this._bars.push({ ...bar, progress: true });
     }
     this._render();
   }
 
-  stop() {
+  _clear() {
+    this._stream.moveCursor(0, -(this._bars.length - 1));
+    this._stream.cursorTo(0);
+    this._stream.clearScreenDown();
+  }
+
+  stop(msg: string) {
+    if (this._autoClear) {
+      this._clear();
+      if (msg) {
+        this._stream.write(msg + '\n');
+      }
+      return;
+    }
     this._stream.write('\n');
   }
 
@@ -96,12 +109,12 @@ class ProgressBar {
   }
 
   add(bar: Bar) {
-    if (bar) {
+    if (typeof bar === 'object') {
       const id = this._bars.length + 1;
-      const barInstance = { ...bar, id };
+      const barInstance = { progress: true, ...bar, id };
       this._bars.push(barInstance);
       if (this._bars.length > 2) {
-        this._stream.moveCursor(0, -1);
+        this._stream.moveCursor(0, -(this._bars.length - 2));
       }
       this._render();
       return {

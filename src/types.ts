@@ -26,4 +26,5 @@ export type Bar = {
   color?: string;
   bgColor?: string;
   size?: BarSize;
+  progress?: boolean;
 };

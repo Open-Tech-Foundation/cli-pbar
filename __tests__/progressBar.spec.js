@@ -1,12 +1,17 @@
 import { PassThrough } from 'stream';
-import { style } from '@open-tech-world/es-cli-styles';
-
-import { ProgressBar } from '../lib/index.esm.js';
+import { style } from '@opentf/cli-styles';
+import { ProgressBar } from '../src/index.ts';
+import {
+  DEFAULT_BAR_CHAR,
+  MEDIUM_BAR_CHAR,
+  SMALL_BAR_CHAR,
+} from '../src/constants.ts';
 
 function getStream(isTTY = true) {
   const stream = new PassThrough();
   stream.clearLine = () => true;
   stream.cursorTo = () => true;
+  stream.moveCursor = () => true;
   stream.isTTY = isTTY;
 
   return stream;
@@ -36,182 +41,153 @@ async function run(cb, options = {}, isTTY = true) {
   return await outputPromise;
 }
 
-describe('ProgressBar', () => {
-  it('renders gray bars, 0%', async () => {
+function getBars(complete = 0, percent = 0, opt = {}) {
+  const options = {
+    width: 30,
+    color: 'g',
+    bgColor: 'gr',
+    size: 'DEFAULT',
+    prefix: '',
+    suffix: '',
+    ...opt,
+  };
+  let barChar;
+  if (options.size === 'DEFAULT') {
+    barChar = DEFAULT_BAR_CHAR;
+  } else if (options.size === 'MEDIUM') {
+    barChar = MEDIUM_BAR_CHAR;
+  } else {
+    barChar = SMALL_BAR_CHAR;
+  }
+  return (
+    options.prefix +
+    ' ' +
+    style(`$${options.color}.bol{${barChar}}`).repeat(complete) +
+    style(`$${options.bgColor}.dim{${barChar}}`).repeat(
+      options.width - complete
+    ) +
+    ` ${percent}%` +
+    ' ' +
+    options.suffix
+  );
+}
+
+describe('Single Progress Bar', () => {
+  it('renders default 0%', async () => {
     const output = await run(async (progress) => {
-      progress.run({ value: 0, total: 5 });
+      progress.start({ total: 100 });
+      progress.stop();
     });
-    const bars = style('~gray.dim{\u{2588}}').repeat(30);
-    expect(output).toHaveLength(1);
-    expect(output[0].trim()).toMatch(bars + ' 0%');
+    const bars = getBars();
+    expect(output[0].trim()).toMatch(bars.trim());
   });
 
-  it('renders 10 width gray bars, 0%', async () => {
-    const output = await run(
-      async (progress) => {
-        progress.run({ value: 0, total: 5 });
-      },
-      { width: 10 }
-    );
-    const bars = style('~gray.dim{\u{2588}}').repeat(10);
-    expect(output).toHaveLength(1);
-    expect(output[0].trim()).toMatch(bars + ' 0%');
-  });
-
-  it('renders gray bars, 0% & prefix', async () => {
-    const output = await run(
-      async (progress) => {
-        progress.run({ value: 0, total: 5 });
-      },
-      { prefix: 'Loading' }
-    );
-    const bars = style('~gray.dim{\u{2588}}').repeat(30);
-    expect(output).toHaveLength(1);
-    expect(output[0].trim()).toMatch('Loading ' + bars + ' 0%');
-  });
-
-  it('renders gray bars, 0% & suffix', async () => {
-    const output = await run(
-      async (progress) => {
-        progress.run({ value: 0, total: 5 });
-      },
-      { suffix: 'ETA: 5 mins' }
-    );
-    const bars = style('~gray.dim{\u{2588}}').repeat(30);
-    expect(output).toHaveLength(1);
-    expect(output[0].trim()).toMatch(bars + ' 0% ETA: 5 mins');
-  });
-
-  it('renders gray bars, 0%, both prefix & suffix', async () => {
-    const output = await run(
-      async (progress) => {
-        progress.run({ value: 0, total: 5 });
-      },
-      { prefix: 'Downloading', suffix: 'ETA: 5 mins' }
-    );
-    const bars = style('~gray.dim{\u{2588}}').repeat(30);
-    expect(output).toHaveLength(1);
-    expect(output[0].trim()).toMatch('Downloading ' + bars + ' 0% ETA: 5 mins');
-  });
-
-  it('renders 3 green bars, 27 gray bars for 10% progress', async () => {
+  it('renders default 10%', async () => {
     const output = await run(async (progress) => {
-      progress.run({ value: 10, total: 100 });
+      progress.start({ total: 100 });
+      progress.update({ value: 10 });
+      progress.stop();
     });
-    const greenBars = style('~green.bold{\u{2588}}').repeat(3);
-    const grayBars = style('~gray.dim{\u{2588}}').repeat(27);
-    expect(output).toHaveLength(1);
-    expect(output[0].trim()).toMatch(greenBars + grayBars + ' 10%');
+    const bars = getBars(3, 10);
+    expect(output[1].trim()).toMatch(bars.trim());
   });
 
-  it('renders 15 green bars, 15 gray bars for 50% progress', async () => {
+  it('renders default 50%', async () => {
     const output = await run(async (progress) => {
-      progress.run({ value: 50, total: 100 });
+      progress.start({ total: 100 });
+      progress.update({ value: 50 });
+      progress.stop();
     });
-    const greenBars = style('~green.bold{\u{2588}}').repeat(15);
-    const grayBars = style('~gray.dim{\u{2588}}').repeat(15);
-    expect(output).toHaveLength(1);
-    expect(output[0].trim()).toMatch(greenBars + grayBars + ' 50%');
+    const bars = getBars(15, 50);
+    expect(output[1].trim()).toMatch(bars.trim());
   });
 
-  it('renders all green bars for 100% progress', async () => {
+  it('renders default 100%', async () => {
     const output = await run(async (progress) => {
-      progress.run({ value: 78, total: 78 });
+      progress.start({ total: 100 });
+      progress.update({ value: 100 });
+      progress.stop();
     });
-    const greenBars = style('~green.bold{\u{2588}}').repeat(30);
-    expect(output).toHaveLength(2);
-    expect(output[0].trim()).toMatch(greenBars + ' 100%');
+    const bars = getBars(30, 100);
+    expect(output[1].trim()).toMatch(bars.trim());
   });
 
-  it('renders orange bars for 55% progress', async () => {
+  it('renders medium size 10% with blue color', async () => {
     const output = await run(
       async (progress) => {
-        progress.run({ value: 55, total: 100 });
+        progress.start({ total: 100 });
+        progress.update({ value: 10 });
+        progress.stop();
       },
-      { color: 'orange' }
+      { size: 'MEDIUM', color: 'b' }
     );
-    const orangeBars = style('~bold.orange{\u{2588}}').repeat(16);
-    const grayBars = style('~dim.gray{\u{2588}}').repeat(14);
-    expect(output).toHaveLength(1);
-    expect(output[0].trim()).toMatch(orangeBars + grayBars + ' 55%');
+    const bars = getBars(3, 10, { size: 'MEDIUM', color: 'b' });
+    expect(output[1].trim()).toMatch(bars.trim());
   });
 
-  test('multiple colors', async () => {
+  it('renders small size 75% with red color', async () => {
     const output = await run(
       async (progress) => {
-        progress.run({ value: 25, total: 100, color: 'red' });
-        progress.run({ value: 50, total: 100, color: 'yellow' });
-        progress.run({ value: 100, total: 100, color: 'green' });
+        progress.start({ total: 100 });
+        progress.update({ value: 75 });
+        progress.stop();
       },
-      { width: 60 }
+      { size: 'SMALL', color: 'r' }
     );
-
-    expect(output).toHaveLength(4);
-
-    const redBars = style('~bold.red{\u{2588}}').repeat(15);
-    let grayBars = style('~dim.gray{\u{2588}}').repeat(45);
-    expect(output[0].trim()).toMatch(redBars + grayBars + ' 25%');
-
-    const yellowBars = style('~bold.yellow{\u{2588}}').repeat(30);
-    grayBars = style('~dim.gray{\u{2588}}').repeat(30);
-    expect(output[1].trim()).toMatch(yellowBars + grayBars + ' 50%');
-
-    const greenBars = style('~bold.green{\u{2588}}').repeat(60);
-    expect(output[2].trim()).toMatch(greenBars + ' 100%');
+    const bars = getBars(22, 75, { size: 'SMALL', color: 'r' });
+    expect(output[1].trim()).toMatch(bars.trim());
   });
 
-  it('auto clears the progress bar', async () => {
+  it('renders red bg color', async () => {
     const output = await run(
       async (progress) => {
-        progress.run({ value: 25, total: 100, prefix: 'Updating OS' });
-        progress.run({ value: 50, total: 100, suffix: 'Updating kernel' });
-        progress.run({
-          value: 75,
-          total: 100,
-          prefix: 'Finishing Update',
-          suffix: '',
-          color: 'green',
-        });
-        progress.run({ value: 100, total: 100 });
+        progress.start({ total: 100 });
+        progress.update({ value: 50 });
+        progress.stop();
       },
-      { autoClear: true, width: 60, color: 'blue' }
+      { bgColor: 'r' }
     );
-
-    expect(output).toHaveLength(4);
-
-    let blueBars = style('~bold.blue{\u{2588}}').repeat(15);
-    let grayBars = style('~dim.gray{\u{2588}}').repeat(45);
-    expect(output[0].trim()).toMatch(
-      'Updating OS ' + blueBars + grayBars + ' 25%'
-    );
-
-    blueBars = style('~bold.blue{\u{2588}}').repeat(30);
-    grayBars = style('~dim.gray{\u{2588}}').repeat(30);
-    expect(output[1].trim()).toMatch(
-      'Updating OS ' + blueBars + grayBars + ' 50% Updating kernel'
-    );
-
-    const greenBars = style('~bold.green{\u{2588}}').repeat(45);
-    grayBars = style('~dim.gray{\u{2588}}').repeat(15);
-    expect(output[2].trim()).toMatch(
-      'Finishing Update ' + greenBars + grayBars + ' 75%'
-    );
+    const bars = getBars(15, 50, { bgColor: 'r' });
+    expect(output[1].trim()).toMatch(bars.trim());
   });
 
-  test('non interactive terminals', async () => {
+  it('renders width 50', async () => {
     const output = await run(
       async (progress) => {
-        progress.run({ value: 0, total: 100, prefix: 'Running task' });
-        progress.run({ value: 50, total: 100 });
-        progress.run({ value: 100, total: 100, suffix: 'Done!' });
+        progress.start({ total: 100 });
+        progress.update({ value: 50 });
+        progress.stop();
       },
-      {},
-      false
+      { width: 50 }
     );
+    const bars = getBars(25, 50, { width: 50 });
+    expect(output[1].trim()).toMatch(bars.trim());
+  });
 
-    expect(output).toHaveLength(3);
-    expect(output[0]).toMatch('Running task 0% \n');
-    expect(output[1]).toMatch('Running task 50% \n');
-    expect(output[2]).toMatch('Running task 100% Done!\n');
+  it('renders with prefix', async () => {
+    const output = await run(async (progress) => {
+      progress.start({ total: 100, prefix: 'PREFIX' });
+      progress.stop();
+    });
+    const bars = getBars(0, 0, { prefix: 'PREFIX' });
+    expect(output[0].trim()).toMatch(bars.trim());
+  });
+
+  it('renders with suffix', async () => {
+    const output = await run(async (progress) => {
+      progress.start({ total: 100, prefix: 'SUFFIX' });
+      progress.stop();
+    });
+    const bars = getBars(0, 0, { prefix: 'SUFFIX' });
+    expect(output[0].trim()).toMatch(bars.trim());
+  });
+
+  it('renders with prefix & suffix', async () => {
+    const output = await run(async (progress) => {
+      progress.start({ total: 100, prefix: 'SUFFIX', suffix: 'SUFFIX' });
+      progress.stop();
+    });
+    const bars = getBars(0, 0, { prefix: 'SUFFIX', suffix: 'SUFFIX' });
+    expect(output[0].trim()).toMatch(bars.trim());
   });
 });
