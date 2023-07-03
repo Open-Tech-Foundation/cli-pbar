@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.1.4
+
+### Patch Changes
+
+- 960c526: Updated pkg keywords.
+
 ## 0.1.3
 
 ### Patch Changes
