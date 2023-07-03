@@ -10,7 +10,7 @@
 
 <div align="center">
 
-![](demo.gif)
+![](demo-min.gif)
 
 </div>
 
