@@ -5,7 +5,12 @@
   "keywords": [
     "cli",
     "progress",
-    "bar"
+    "bar",
+    "multi",
+    "console",
+    "terminal",
+    "color",
+    "small"
   ],
   "type": "module",
   "main": "dist/index.cjs",
