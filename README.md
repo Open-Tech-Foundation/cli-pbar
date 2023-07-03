@@ -1,85 +1,132 @@
 <div align="center">
 
-# @open-tech-world/cli-progress-bar
+# @opentf/cli-pbar
 
-[![Build](https://github.com/open-tech-world/cli-progress-bar/actions/workflows/build.yml/badge.svg)](https://github.com/open-tech-world/cli-progress-bar/actions/workflows/build.yml) [![CodeFactor](https://www.codefactor.io/repository/github/open-tech-world/cli-progress-bar/badge)](https://www.codefactor.io/repository/github/open-tech-world/cli-progress-bar)
-![npm (scoped)](https://img.shields.io/npm/v/@open-tech-world/cli-progress-bar)
+⚡ by [OPEN TECH FOUNDATION](https://open-tech-foundation.pages.dev/)
+
+</div>
+
+[![Build](https://github.com/open-tech-world/cli-progress-bar/actions/workflows/build.yml/badge.svg)](https://github.com/open-tech-world/cli-progress-bar/actions/workflows/build.yml)
+
+<div align="center">
 
 ![](demo.gif)
 
 </div>
 
-> Node.js CLI progress bar.
+> CLI progress bar.
 
-Internally it uses [@open-tech-world/es-cli-styles](https://github.com/open-tech-world/es-cli-styles) for terminal colors. Refer it for supported colors.
+## Features
+
+- Single & Multi progress bar
+
+- Custom bar colors
+
+- Multiple sizes
 
 ## Installation
 
-Using npm
-
 ```bash
-$ npm install @open-tech-world/cli-progress-bar
+npm install @opentf/cli-pbar
 ```
 
-Using Yarn
+```bash
+yarn add @opentf/cli-pbar
+```
 
 ```bash
-$ yarn add @open-tech-world/cli-progress-bar
+pnpm add @opentf/cli-pbar
+```
+
+## Syntax
+
+```ts
+new ProgressBar(options?: Options)
 ```
 
 ## Usage
 
-```ts
-import { ProgressBar } from '@open-tech-world/cli-progress-bar';
+Single progress bar.
 
-const pBar = new ProgressBar({ prefix: 'Downloading' });
-pBar.run({ value: 0, total: 100 });
-pBar.run({ value: 50, total: 100 });
-pBar.run({ value: 100, total: 100, prefix: 'Download Completed!' });
+```ts
+import { ProgressBar } from '@opentf/cli-pbar';
+
+const pBar = new ProgressBar();
+pBar.start({ total: 100 });
+pBar.update({ value: 50 });
+pBar.update({ value: 100 });
+pBar.stop();
+```
+
+Multi progress bar.
+
+```ts
+import { ProgressBar } from '@opentf/cli-pbar';
+
+const multiPBar = new ProgressBar();
+multiPBar.start();
+const b1 = multiPBar.add({ total: 100 });
+const b2 = multiPBar.add({ total: 100 });
+const b3 = multiPBar.add({ total: 100 });
+b1.update({ value: 23 });
+b3.update({ value: 35 });
+b2.update({ value: 17 });
+multiPBar.stop();
 ```
 
 ## API
 
-**new ProgressBar(options?: Partial\<IOptions\>)**
+### options:
 
-It creates a new instance of the `ProgressBar`.
+| Name      | Type               | Default        | Description                                                                                                                                                                                                                                                                                                                                              |
+| --------- | ------------------ | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| stream    | NodeJS.WriteStream | process.stderr | The stream to use.                                                                                                                                                                                                                                                                                                                                       |
+| width     | number             | 30             | The size of the progress bar.                                                                                                                                                                                                                                                                                                                            |
+| prefix    | string             | ''             | The string to be prefixed progress bar.                                                                                                                                                                                                                                                                                                                  |
+| suffix    | string             | ''             | The string to be suffixed progress bar.                                                                                                                                                                                                                                                                                                                  |
+| color     | string             | 'g'            | The color to render the completed progress bar.<br />The default color is `green`.<br /> It uses [@opentf/cli-styles](https://www.npmjs.com/package/@opentf/cli-styles) for colors.<br />You can also use the `rgb` & `hex` color modes, please refer the [supported color keys here](https://github.com/open-tech-foundation/js-cli-styles#color-keys). |
+| bgColor   | string             | 'gr'           | The color to render the incomplete progress bar.<br />The default color is `grey`.<br /> It uses [@opentf/cli-styles](https://www.npmjs.com/package/@opentf/cli-styles) for colors.<br />You can also use the `rgb` & `hex` color modes, please refer the [supported color keys here](https://github.com/open-tech-foundation/js-cli-styles#color-keys). |
+| size      | string             | 'DEFAULT'      | The size of the progress bar to render.<br />Available sizes:<br/>'DEFAULT'<br/>'MEDIUM'<br/>'SMALL'                                                                                                                                                                                                                                                     |
+| autoClear | boolean            | false          | If true, then it auto-clears the progress bar after the `stop` method is called.                                                                                                                                                                                                                                                                         |
 
-options:
+### Instance methods:
 
-| Name      | Type               | Default        | Description                                                                                                                                 |
-| --------- | ------------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| stream    | NodeJS.WriteStream | process.stderr | The stream to use.                                                                                                                          |
-| width     | number             | 30             | The size of the progress bar.                                                                                                               |
-| prefix    | string             | ''             | The string to be prefixed progress bar.                                                                                                     |
-| suffix    | string             | ''             | The string to be suffixed progress bar.                                                                                                     |
-| color     | string             | 'green'        | The color to render the progress bar. Refer the [supported color names here](https://github.com/open-tech-world/es-cli-styles#style-names). |
-| autoClear | boolean            | false          | If true, then it auto clears the progress bar when it reaches `100%`.                                                                       |
+**start(obj?: Partial<Bar\>): void**
 
-#### Instance methods:
+After the method is called, the progress bar starts rendering.
 
-**run(options: IRunOptions): void**
+#### Bar:
 
-Runs the current progress bar instance with the given values & options.
+| Name     | Type    | Default   | Description                                                                                                                                                                                                                                                                                                                                              |
+| -------- | ------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| total    | number  | NaN       | The total value for the progress bar.                                                                                                                                                                                                                                                                                                                    |
+| value    | number  | NaN       | The current value of the progress bar.                                                                                                                                                                                                                                                                                                                   |
+| prefix   | string  | ''        | The string to be prefixed progress bar.                                                                                                                                                                                                                                                                                                                  |
+| suffix   | string  | ''        | The string to be suffixed progress bar.                                                                                                                                                                                                                                                                                                                  |
+| color    | string  | 'g'       | The color to render the completed progress bar.<br />The default color is `green`.<br /> It uses [@opentf/cli-styles](https://www.npmjs.com/package/@opentf/cli-styles) for colors.<br />You can also use the `rgb` & `hex` color modes, please refer the [supported color keys here](https://github.com/open-tech-foundation/js-cli-styles#color-keys). |
+| bgColor  | string  | 'gr'      | The color to render the incomplete progress bar.<br />The default color is `grey`.<br /> It uses [@opentf/cli-styles](https://www.npmjs.com/package/@opentf/cli-styles) for colors.<br />You can also use the `rgb` & `hex` color modes, please refer the [supported color keys here](https://github.com/open-tech-foundation/js-cli-styles#color-keys). |
+| size     | string  | 'DEFAULT' | The size of the progress bar.<br />Available sizes:<br/>'DEFAULT'<br/>'MEDIUM'<br/>'SMALL'                                                                                                                                                                                                                                                               |
+| progress | boolean | true      | If `false`, it does not render a progress bar, making it useful to add an empty line or text without displaying a progress bar.                                                                                                                                                                                                                          |
 
-options:
+**add(obj: Partial<Bar\>): { update: (obj: Partial<Bar\>) => void }**
 
-| Name   | Type   | Default | Required | Description                                                                                                                                 |
-| ------ | ------ | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| value  | number | NaN     | Yes      | The current value of the progress bar.                                                                                                      |
-| total  | number | NaN     | Yes      | The total value for the progress bar.                                                                                                       |
-| prefix | string | ''      | No       | The string to be prefixed progress bar.                                                                                                     |
-| suffix | string | ''      | No       | The string to be suffixed progress bar.                                                                                                     |
-| color  | string | 'green' | No       | The color to render the progress bar. Refer the [supported color names here](https://github.com/open-tech-world/es-cli-styles#style-names). |
+In `multi-progress` bars, it appends a progress bar to the container and returns an object with a method to update it.
 
-**stop(clear = false): void**
+**update(obj: Partial<Bar\>): void**
 
-Stops the current progress bar instance with the current state and optionally clears the progress bar.
+In updates the current progress bar instance.
 
-```ts
-pBar.stop(); // It just stops the progress bar.
+**stop(msg?: string): void**
 
-pBar.stop(true); // It stops & removes the progress bar.
-```
+Stops the current progress bar instance with the current state and optionally clears the progress bar when `autoClear` is true.
+
+You can also pass `msg` text to be displayed after the instance stops.
+
+## Related
+
+- [@opentf/utils](https://www.npmjs.com/package/@opentf/utils) - A collection of JavaScript utility functions.
+
+- [@opentf/cli-styles](https://www.npmjs.com/package/@opentf/cli-styles) - Style your CLI text using ANSI escape sequences.
 
 ## License
 

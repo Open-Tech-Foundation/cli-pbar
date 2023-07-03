@@ -71,9 +71,9 @@ class ProgressBar {
     });
   }
 
-  start(bar?: Bar) {
-    if (bar) {
-      this._bars.push({ ...bar, progress: true });
+  start(obj?: Partial<Bar>) {
+    if (typeof obj === 'object') {
+      this._bars.push({ ...obj, progress: true } as Bar);
     }
     this._render();
   }
@@ -84,7 +84,7 @@ class ProgressBar {
     this._stream.clearScreenDown();
   }
 
-  stop(msg: string) {
+  stop(msg?: string) {
     if (this._autoClear) {
       this._clear();
       if (msg) {
@@ -108,10 +108,10 @@ class ProgressBar {
     this._render();
   }
 
-  add(bar: Bar) {
-    if (typeof bar === 'object') {
+  add(obj: Partial<Bar>) {
+    if (typeof obj === 'object') {
       const id = this._bars.length + 1;
-      const barInstance = { progress: true, ...bar, id };
+      const barInstance = { progress: true, ...obj, id } as Bar;
       this._bars.push(barInstance);
       if (this._bars.length > 2) {
         this._stream.moveCursor(0, -(this._bars.length - 2));
