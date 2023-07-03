@@ -4,11 +4,15 @@
 
 ⚡ by [OPEN TECH FOUNDATION](https://open-tech-foundation.pages.dev/)
 
+</div>
+
+[![Build](https://github.com/open-tech-foundation/cli-progress-bar/actions/workflows/build.yml/badge.svg)](https://github.com/open-tech-foundation/cli-progress-bar/actions/workflows/build.yml)
+
+<div align="center">
+
 ![](demo-min.gif)
 
 </div>
-
-[![Build](https://github.com/open-tech-world/cli-progress-bar/actions/workflows/build.yml/badge.svg)](https://github.com/open-tech-world/cli-progress-bar/actions/workflows/build.yml)
 
 > CLI progress bar.
 
