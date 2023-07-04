@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.1.5
+
+### Patch Changes
+
+- d52ba4d: Updated pkg keywords
+
 ## 0.1.4
 
 ### Patch Changes
