@@ -5,11 +5,15 @@
   "keywords": [
     "cli",
     "progress",
+    "progressbar",
     "bar",
     "multi",
+    "multibar",
+    "multiple",
     "console",
     "terminal",
     "color",
+    "colour",
     "small"
   ],
   "type": "module",
