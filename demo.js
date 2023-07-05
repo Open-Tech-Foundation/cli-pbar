@@ -115,6 +115,7 @@ async function downloading() {
     });
   }
 
+  console.log('Downloading files:');
   const downloadBar = template('Multi Progressbar', { size: 'MEDIUM' });
   downloadBar.start();
   await Promise.all(files.map((f) => download(f, downloadBar)));
@@ -122,7 +123,7 @@ async function downloading() {
 }
 
 async function autoClear() {
-  const pBar = template('Auto Clear + Stop msg', { autoClear: true });
+  const pBar = template('Multi + Auto Clear + Stop msg', { autoClear: true });
   console.log();
   console.log('Compiling web application...');
   console.log();
