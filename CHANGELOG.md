@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.1.8
+
+### Patch Changes
+
+- b93ec98: Fixed readme demo gif url
+
 ## 0.1.7
 
 ### Patch Changes
