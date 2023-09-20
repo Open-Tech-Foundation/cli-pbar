@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.1.7
+
+### Patch Changes
+
+- 8a08a3a: Moved demo gif to assets dir
+
 ## 0.1.6
 
 ### Patch Changes
