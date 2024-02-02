@@ -1,12 +1,14 @@
+<img align="left" src="https://open-tech-foundation.pages.dev/img/Logo.svg" width="50" height="50">
+
+&nbsp;[OPEN TECH FOUNDATION](https://open-tech-foundation.pages.dev/)
+
 <div align="center">
 
 # @opentf/cli-pbar
 
-⚡ by [OPEN TECH FOUNDATION](https://open-tech-foundation.pages.dev/)
+[![Build](https://github.com/open-tech-foundation/cli-progress-bar/actions/workflows/build.yml/badge.svg)](https://github.com/open-tech-foundation/cli-progress-bar/actions/workflows/build.yml)
 
 </div>
-
-[![Build](https://github.com/open-tech-foundation/cli-progress-bar/actions/workflows/build.yml/badge.svg)](https://github.com/open-tech-foundation/cli-progress-bar/actions/workflows/build.yml)
 
 <div align="center">
 
@@ -36,6 +38,10 @@ yarn add @opentf/cli-pbar
 
 ```bash
 pnpm add @opentf/cli-pbar
+```
+
+```bash
+bun add @opentf/cli-pbar
 ```
 
 ## Syntax
