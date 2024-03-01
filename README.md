@@ -16,7 +16,9 @@
 
 </div>
 
-> CLI progress bar.
+> The CLI progress bar.
+
+# You can now try it online at [node-repl.pages.dev](https://node-repl.pages.dev/)
 
 ## Features
 
