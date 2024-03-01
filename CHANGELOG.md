@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.2.1
+
+### Patch Changes
+
+- e06dfac: Updated readme with node repl link
+
 ## 0.2.0
 
 ### Minor Changes

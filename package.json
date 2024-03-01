@@ -1,6 +1,6 @@
 {
   "name": "@opentf/cli-pbar",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "CLI progress bar.",
   "keywords": [
     "cli",
