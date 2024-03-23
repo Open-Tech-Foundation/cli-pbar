@@ -5,7 +5,7 @@
     "rootDir": "./src",
     "types": ["node"],
     "lib": ["es2022"],
-    "module": "Node16",
+    "module": "ESNext",
     "target": "es2022",
     "strict": true,
     "moduleResolution": "node",
