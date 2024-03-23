@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.2.2
+
+### Patch Changes
+
+- 388f534: Updated docs with utils lib announcement.
+
 ## 0.2.1
 
 ### Patch Changes
