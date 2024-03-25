@@ -20,7 +20,7 @@
 
 ## Try it online at [https://node-repl.pages.dev](https://node-repl.pages.dev/)
 
-### [@opentf/std](https://js-utils.pages.dev/) - An Extensive JavaScript Standard Library, please review and give feedback.
+### [@opentf/std](https://js-std.pages.dev/) - An Extensive JavaScript Standard Library, please review and give feedback.
 
 ## Features
 
