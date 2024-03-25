@@ -65,7 +65,7 @@
     "@changesets/cli": "^2.27.1",
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
-    "@opentf/eslint-config-base": "^0.1.0",
+    "@opentf/eslint-config-base": "^0.2.0",
     "@swc/core": "^1.4.8",
     "@swc/jest": "^0.2.24",
     "@types/jest": "^29.5.2",
@@ -80,7 +80,7 @@
   },
   "dependencies": {
     "@opentf/cli-styles": "^0.10.0",
-    "@opentf/utils": "^0.40.0"
+    "@opentf/std": "^0.1.0"
   },
   "publishConfig": {
     "access": "public",

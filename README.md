@@ -20,7 +20,7 @@
 
 ## Try it online at [https://node-repl.pages.dev](https://node-repl.pages.dev/)
 
-### [@opentf/utils](https://js-utils.pages.dev/) - Our new JavaScript utility library, please review and give feedback.
+### [@opentf/std](https://js-utils.pages.dev/) - An Extensive JavaScript Standard Library, please review and give feedback.
 
 ## Features
 
@@ -134,7 +134,7 @@ You can also pass `msg` text to be displayed after the instance stops.
 
 ## Related
 
-- [@opentf/utils](https://www.npmjs.com/package/@opentf/utils) - A collection of JavaScript utility functions.
+- [@opentf/std](https://www.npmjs.com/package/@opentf/std) - A collection of JavaScript utility functions.
 
 - [@opentf/cli-styles](https://www.npmjs.com/package/@opentf/cli-styles) - Style your CLI text using ANSI escape sequences.
 

@@ -1,5 +1,5 @@
 import { style } from '@opentf/cli-styles';
-import { percentage, percentageOf } from '@opentf/utils';
+import { percentage, percentageOf } from '@opentf/std';
 import { type Bar, type BarSize, type Options } from './types';
 import { DEFAULT_BAR_CHAR, MEDIUM_BAR_CHAR, SMALL_BAR_CHAR } from './constants';
 

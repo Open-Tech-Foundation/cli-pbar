@@ -1,6 +1,6 @@
 import https from 'node:https';
 import path from 'node:path';
-import { sleep } from '@opentf/utils';
+import { sleep } from '@opentf/std';
 import { style } from '@opentf/cli-styles';
 import { ProgressBar } from './dist/index.js';
 
@@ -152,7 +152,7 @@ async function autoClear() {
     'zustand',
     'recoil',
     'lodash',
-    '@opentf/utils',
+    '@opentf/std',
     'emotion',
     'material-ui',
     'pandacss',
