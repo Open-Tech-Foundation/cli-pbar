@@ -1,5 +1,15 @@
 # @opentf/cli-pbar
 
+## 0.3.0
+
+### Minor Changes
+
+- f569890: Changed utils lib to std.
+
+### Patch Changes
+
+- fd46f72: Updated readme.
+
 ## 0.2.2
 
 ### Patch Changes
