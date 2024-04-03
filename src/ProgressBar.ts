@@ -1,5 +1,11 @@
 import { style } from '@opentf/cli-styles';
-import { percentage, percentageOf } from '@opentf/std';
+import {
+  compact,
+  intersperse,
+  isObj,
+  percentage,
+  percentageOf,
+} from '@opentf/std';
 import { type Bar, type BarSize, type Options } from './types';
 import { DEFAULT_BAR_CHAR, MEDIUM_BAR_CHAR, SMALL_BAR_CHAR } from './constants';
 
@@ -55,12 +61,18 @@ class ProgressBar {
 
       const prefix = b.prefix || '';
       const suffix = b.suffix || '';
+
       if (b.progress) {
         const percent = b.total
           ? Math.trunc(percentage(isNaN(b.value) ? 0 : b.value, b.total))
           : 0;
         const bar = this._getBars(b, percent);
-        str += prefix + ' ' + bar + ' ' + percent + '% ' + suffix;
+        str += (
+          intersperse(
+            compact([prefix, bar, percent + '%', suffix]),
+            ' '
+          ) as string[]
+        ).join('');
       } else {
         str += prefix + ' ' + suffix;
       }
@@ -99,9 +111,7 @@ class ProgressBar {
     if (!id) {
       this._bars[0] = { ...(this._bars[0] as Bar), ...obj } as Bar;
     } else {
-      const index = this._bars.findIndex(
-        (b) => typeof b === 'object' && b.id === id
-      );
+      const index = this._bars.findIndex((b) => isObj(b) && b.id === id);
       this._bars[index] = { ...(this._bars[index] as Bar), ...obj } as Bar;
     }
     this._stream.moveCursor(0, -(this._bars.length - 1));
@@ -109,7 +119,7 @@ class ProgressBar {
   }
 
   add(obj: Partial<Bar>) {
-    if (typeof obj === 'object') {
+    if (isObj(obj)) {
       const id = this._bars.length + 1;
       const barInstance = { progress: true, ...obj, id } as Bar;
       this._bars.push(barInstance);

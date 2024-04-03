@@ -2,7 +2,7 @@ import https from 'node:https';
 import path from 'node:path';
 import { sleep } from '@opentf/std';
 import { style } from '@opentf/cli-styles';
-import { ProgressBar } from './dist/index.js';
+import { ProgressBar } from './src';
 
 function template(title, options = {}) {
   console.log(style(`$o.bol.und{\n${title}\n}`));
@@ -166,7 +166,9 @@ async function autoClear() {
     if (cVal < 100) {
       cVal += 10;
       client.update({ value: cVal });
-      cfiles.update({ suffix: `/node_modules/${pkgs.pop()}/index.js` });
+      cfiles.update({
+        suffix: `/node_modules/${pkgs.pop()}/index.js`,
+      });
     }
 
     if (sVal < 100) {
@@ -187,12 +189,43 @@ async function autoClear() {
       pBar.stop('Successfully compiled, your app is now ready to deploy 🚀');
       clearInterval(intervalID);
     }
-  }, 200);
+  }, 100);
+
+  await sleep(1500);
+}
+
+async function styledTexts() {
+  const multiPBar = template('Styled Texts', {});
+  multiPBar.start();
+  const b1 = multiPBar.add({ total: 100 });
+  const t1 = multiPBar.add({ progress: false });
+  const b2 = multiPBar.add({ total: 100 });
+  const t2 = multiPBar.add({ progress: false });
+  const b3 = multiPBar.add({ total: 100 });
+  const t3 = multiPBar.add({ progress: false });
+  b1.update({ value: 23, prefix: 'ProgressBar 1', color: 'g' });
+  t1.update({ prefix: style('$r{This is some long text}') });
+  b3.update({
+    value: 35,
+    prefix: 'Prefix 3',
+    suffix: 'Suffix 3',
+    color: 'b',
+    bgColor: 'y',
+  });
+  t2.update({ prefix: 'This is some long text', color: 'bl', bgColor: 'y' });
+  b2.update({ value: 17, suffix: 'Suffix 2' });
+  t3.update({
+    prefix: 'This is some long text with invalid styles.',
+    color: 'bl2',
+    bgColor: 'y3',
+  });
+  multiPBar.stop();
 }
 
 await defaultBar();
 await mediumBar();
 await smallBar();
 await prefixSuffix();
-await downloading();
-autoClear();
+// await downloading();
+await autoClear();
+await styledTexts();

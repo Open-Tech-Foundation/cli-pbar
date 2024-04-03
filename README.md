@@ -18,9 +18,17 @@
 
 > The CLI progress bar.
 
-## Try it online at [https://node-repl.pages.dev](https://node-repl.pages.dev/)
+<div align="center">
 
-### [@opentf/std](https://js-std.pages.dev/) - An Extensive JavaScript Standard Library, please review and give feedback.
+**Try it online at [https://node-repl.pages.dev](https://node-repl.pages.dev/)**
+
+</div>
+
+---
+
+🚀 [@opentf/std](https://js-std.pages.dev/) - An Extensive JavaScript Standard Library. Please review and give feedback.
+
+---
 
 ## Features
 
@@ -134,9 +142,9 @@ You can also pass `msg` text to be displayed after the instance stops.
 
 ## Related
 
-- [@opentf/std](https://www.npmjs.com/package/@opentf/std) - A collection of JavaScript utility functions.
+- [@opentf/std](https://js-std.pages.dev/) - An Extensive JavaScript Standard Library.
 
-- [@opentf/cli-styles](https://www.npmjs.com/package/@opentf/cli-styles) - Style your CLI text using ANSI escape sequences.
+- [@opentf/cli-styles](https://github.com/Open-Tech-Foundation/js-cli-styles) - Style your CLI text using ANSI escape sequences.
 
 ## License
 
