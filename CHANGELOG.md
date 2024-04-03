@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.4.0
+
+### Minor Changes
+
+- 67c771a: Fixed unnecessary spaces in a row if prefix absent.
+
 ## 0.3.0
 
 ### Minor Changes
