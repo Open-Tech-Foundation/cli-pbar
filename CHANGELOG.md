@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.5.0
+
+### Minor Changes
+
+- 91c6883: Added inc method to increment the progress bar value.
+
 ## 0.4.0
 
 ### Minor Changes
