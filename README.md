@@ -95,7 +95,7 @@ multiPBar.stop();
 ```
 
 > [!TIP]
-> It is recommended to use the `MEDIUM` sized bars in multi progress bars for better visuals.
+> It is recommended to use the `MEDIUM` sized bars in multi progress bars to get better visuals.
 
 ## Examples
 
@@ -127,6 +127,52 @@ pBar.stop();
 
 ![Count Demo](./assets/count-demo.png)
 
+---
+
+Rendering a plain variant progress bar.
+
+```js
+import { ProgressBar } from '@opentf/cli-pbar';
+
+const pBar = new ProgressBar({
+  variant: 'PLAIN',
+  prefix: 'Downloading',
+});
+
+pBar.start({ total: 3 });
+pBar.inc();
+pBar.stop();
+```
+
+![Plain Variant Demo](./assets/plain-demo.png)
+
+---
+
+It does not render progress bars in non TTY terminals, like CI, etc.
+
+```js
+import { sleep, aForEach } from '@opentf/std';
+import { ProgressBar } from '@opentf/cli-pbar';
+
+const arr = ['File 1', 'File 2', 'File 3'];
+const pBar = new ProgressBar({
+  prefix: 'Downloading',
+  showPercent: false,
+  showCount: true,
+});
+
+pBar.start({ total: arr.length });
+
+await aForEach(arr, async (f) => {
+  pBar.inc({ suffix: f });
+  await sleep(500);
+});
+
+pBar.stop();
+```
+
+![CI Demo](./assets/ci-demo.png)
+
 ## API
 
 ### options:
@@ -143,6 +189,7 @@ pBar.stop();
 | autoClear   | boolean     | false          | If true, then it auto-clears the progress bar after the `stop` method is called.                                                                                                                                                                                                                                                                         |
 | showPercent | boolean     | true           | If false, then it hides the progress bar percent.                                                                                                                                                                                                                                                                                                        |
 | showCount   | boolean     | false          | If true, then it show the progress bar count.                                                                                                                                                                                                                                                                                                            |
+| variant     | string      | 'STANDARD'     | There are two variants available, `STANDARD` & `PLAIN`.                                                                                                                                                                                                                                                                                                  |
 
 ### Instance methods:
 

@@ -1,6 +1,6 @@
 import https from 'node:https';
 import path from 'node:path';
-import { sleep } from '@opentf/std';
+import { aForEach, sleep } from '@opentf/std';
 import { style } from '@opentf/cli-styles';
 import { ProgressBar } from './src';
 
@@ -222,6 +222,25 @@ async function styledTexts() {
   multiPBar.stop();
 }
 
+async function plain() {
+  const arr = ['Apple', 'Mango', 'Orange', 'Grapes', 'Pear', 'Guava'];
+
+  const pBar = template('Plain', {
+    variant: 'PLAIN',
+    prefix: 'Downloading',
+    showPercent: true,
+    showCount: false,
+  });
+  pBar.start({ total: arr.length });
+
+  await aForEach(arr, async (f) => {
+    await sleep(500);
+    pBar.inc({ suffix: f });
+  });
+
+  pBar.stop();
+}
+
 await defaultBar();
 await mediumBar();
 await smallBar();
@@ -229,3 +248,4 @@ await prefixSuffix();
 // await downloading();
 await autoClear();
 await styledTexts();
+await plain();

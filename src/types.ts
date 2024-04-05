@@ -23,6 +23,8 @@ export type Options = {
   showPercent: boolean;
   /** Show hide progress bar count */
   showCount: boolean;
+  /** Renders the progress bars based on the variant */
+  variant: 'PLAIN' | 'STANDARD';
 };
 
 export type Bar = Omit<Options, 'stream' | 'width' | 'autoClear'> & {

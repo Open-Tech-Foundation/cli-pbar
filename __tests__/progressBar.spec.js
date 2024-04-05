@@ -4,6 +4,8 @@ import { ProgressBar } from '../src/index.ts';
 import {
   DEFAULT_BAR_CHAR,
   MEDIUM_BAR_CHAR,
+  PLAIN_DONE_BAR_CHAR,
+  PLAIN_NOT_DONE_BAR_CHAR,
   SMALL_BAR_CHAR,
 } from '../src/constants.ts';
 
@@ -44,6 +46,14 @@ async function run(cb, options = {}, isTTY = true) {
 function getBarsStr(n, done = false) {
   return style(
     `$${done ? 'g' : 'gr'}.${done ? 'bol' : 'dim'}{${DEFAULT_BAR_CHAR}}`
+  ).repeat(n);
+}
+
+function getPlainBarsStr(n, done = false, color = '') {
+  return style(
+    `$${color}.${done ? 'bol' : 'dim'}{${
+      done ? PLAIN_DONE_BAR_CHAR : PLAIN_NOT_DONE_BAR_CHAR
+    }}`
   ).repeat(n);
 }
 
@@ -209,5 +219,54 @@ describe('Single Progress Bar', () => {
     );
     const outBars = getBarsStr(1, true) + getBarsStr(2) + ' [2/3]';
     expect(output[2]).toStrictEqual(outBars);
+  });
+
+  it('renders plain progress bar', async () => {
+    const output = await run(
+      async (pBar) => {
+        pBar.start({ total: 3 });
+        pBar.inc();
+        pBar.inc();
+        pBar.stop();
+      },
+      { width: 3, variant: 'PLAIN' }
+    );
+    const outBars =
+      '[' + getPlainBarsStr(1, true) + getPlainBarsStr(2) + ']' + ' 66%';
+    expect(output[2]).toStrictEqual(outBars);
+  });
+
+  it('renders plain progress bar with colors', async () => {
+    const output = await run(
+      async (pBar) => {
+        pBar.start({ total: 3 });
+        pBar.inc();
+        pBar.inc();
+        pBar.stop();
+      },
+      { width: 3, variant: 'PLAIN', color: 'g', bgColor: 'r' }
+    );
+    const outBars =
+      '[' +
+      getPlainBarsStr(1, true, 'g') +
+      getPlainBarsStr(2, false, 'r') +
+      ']' +
+      ' 66%';
+    expect(output[2]).toStrictEqual(outBars);
+  });
+
+  it('renders no progress bars when the stream is not TTY', async () => {
+    const output = await run(
+      async (pBar) => {
+        pBar.start({ total: 3 });
+        pBar.inc();
+        pBar.inc();
+        pBar.inc();
+        pBar.stop();
+      },
+      { width: 3, prefix: 'Downloading' },
+      false
+    );
+    expect(output[3]).toBe('⏳ Downloading 100%\n');
   });
 });
