@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.7.0
+
+### Minor Changes
+
+- 279dcdb: Feature: Added `PLAIN` variant & fixed no progress bars on CI env.
+
 ## 0.6.0
 
 ### Minor Changes
