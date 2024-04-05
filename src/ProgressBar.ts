@@ -106,9 +106,9 @@ class ProgressBar {
   }
 
   /** Starts rendering of the progress bars. */
-  start(obj?: Partial<Bar>) {
-    if (typeof obj === 'object') {
-      this._bars.push({ ...obj, progress: true } as Bar);
+  start(bar?: Partial<Bar>) {
+    if (isObj(bar)) {
+      this._bars.push({ ...bar, progress: true } as Bar);
     }
     this._render();
   }
@@ -132,35 +132,36 @@ class ProgressBar {
   }
 
   /** Update the current progress bar */
-  update(obj: Partial<Bar>, id?: number) {
+  update(bar: Partial<Bar>, id?: number) {
     if (!id) {
-      this._bars[0] = { ...(this._bars[0] as Bar), ...obj } as Bar;
+      this._bars[0] = { ...(this._bars[0] as Bar), ...bar } as Bar;
     } else {
       const index = this._bars.findIndex((b) => isObj(b) && b.id === id);
-      this._bars[index] = { ...(this._bars[index] as Bar), ...obj } as Bar;
+      this._bars[index] = { ...(this._bars[index] as Bar), ...bar } as Bar;
     }
     this._options.stream.moveCursor(0, -(this._bars.length - 1));
     this._render();
   }
 
   /** Adds a new progress bar to the rendering stack. */
-  add(obj: Partial<Bar>) {
-    if (isObj(obj)) {
-      const id = this._bars.length + 1;
-      const barInstance = { progress: true, ...obj, id } as Bar;
-      this._bars.push(barInstance);
-      if (this._bars.length > 2) {
-        this._options.stream.moveCursor(0, -(this._bars.length - 2));
-      }
-      this._render();
-      return {
-        update: (obj: Partial<Bar>) => {
-          this.update(obj, id);
-        },
-      };
+  add(bar: Partial<Bar>) {
+    const id = this._bars.length + 1;
+    const barInstance = { progress: true, ...bar, id } as Bar;
+    this._bars.push(barInstance);
+    if (this._bars.length > 2) {
+      this._options.stream.moveCursor(0, -(this._bars.length - 2));
     }
-
-    return null;
+    this._render();
+    return {
+      update: (bar: Partial<Bar>) => {
+        this.update(bar, id);
+      },
+      inc: (bar?: Partial<Bar>, val = 1) => {
+        const curBar = this._bars.find((b) => b.id === id);
+        const n = curBar?.value || 0;
+        this.update({ ...bar, value: n + val }, id);
+      },
+    };
   }
 
   /** Increment the value + 1, optionally with the provided value. */

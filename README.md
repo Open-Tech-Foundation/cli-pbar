@@ -95,7 +95,7 @@ multiPBar.stop();
 ```
 
 > [!TIP]
-> It is recommended to use `MEDIUM` sized bars in multi progress bars for better visuals.
+> It is recommended to use the `MEDIUM` sized bars in multi progress bars for better visuals.
 
 ## Examples
 

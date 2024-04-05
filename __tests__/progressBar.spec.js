@@ -41,6 +41,12 @@ async function run(cb, options = {}, isTTY = true) {
   return await outputPromise;
 }
 
+function getBarsStr(n, done = false) {
+  return style(
+    `$${done ? 'g' : 'gr'}.${done ? 'bol' : 'dim'}{${DEFAULT_BAR_CHAR}}`
+  ).repeat(n);
+}
+
 function getBars(complete = 0, percent = 0, opt = {}) {
   const options = {
     width: 30,
@@ -189,5 +195,19 @@ describe('Single Progress Bar', () => {
     });
     const bars = getBars(0, 0, { prefix: 'SUFFIX', suffix: 'SUFFIX' });
     expect(output[0].trim()).toMatch(bars.trim());
+  });
+
+  it('renders with no precent & with count', async () => {
+    const output = await run(
+      async (pBar) => {
+        pBar.start({ total: 3 });
+        pBar.inc();
+        pBar.inc();
+        pBar.stop();
+      },
+      { showPercent: false, width: 3, showCount: true }
+    );
+    const outBars = getBarsStr(1, true) + getBarsStr(2) + ' [2/3]';
+    expect(output[2]).toStrictEqual(outBars);
   });
 });
