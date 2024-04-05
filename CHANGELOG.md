@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.6.0
+
+### Minor Changes
+
+- b6db659: Fixed not incrementing bars in multi progress bars.
+
 ## 0.5.0
 
 ### Minor Changes
