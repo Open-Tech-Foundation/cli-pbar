@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.7.1
+
+### Patch Changes
+
+- 3612706: Updated docs.
+
 ## 0.7.0
 
 ### Minor Changes
