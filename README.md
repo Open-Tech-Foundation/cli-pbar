@@ -214,15 +214,15 @@ After the method is called, the progress bar starts rendering.
 
 ### add(bar: Partial<Bar\>): { update: (bar: Partial<Bar\>) => void }
 
-In `multi-progress` bars, it appends a progress bar to the container and returns an object with a method to update it.
+In `multi-progress`, it appends a progress bar to the container and returns an instance.
 
 ### update(bar: Partial<Bar\>): void
 
-In updates the current progress bar instance.
+It is used to update the current progress bar instance.
 
 ### inc(bar: Partial<Bar\>): void
 
-In increments the progress bar value and optionaly updates the other bar props.
+It increments the progress bar value and optionaly updates the other bar props.
 
 ### stop(msg?: string): void
 
