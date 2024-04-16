@@ -28,6 +28,12 @@
 
 🚀 [@opentf/std](https://js-std.pages.dev/) - An Extensive JavaScript Standard Library. Please review and give feedback.
 
+Please read our important articles:
+
+- [Introducing Our New JavaScript Standard Library](https://ganapathy.hashnode.dev/introducing-our-new-javascript-standard-library)
+
+- [You Don’t Need JavaScript Native Methods](https://ganapathy.hashnode.dev/you-dont-need-javascript-native-methods)
+
 ---
 
 ## Features
