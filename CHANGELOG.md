@@ -1,5 +1,11 @@
 # @opentf/cli-pbar
 
+## 0.7.2
+
+### Patch Changes
+
+- b845735: Updated readme with js-std articles.
+
 ## 0.7.1
 
 ### Patch Changes
